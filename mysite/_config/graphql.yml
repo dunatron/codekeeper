@@ -1,0 +1,43 @@
+---
+Name: app-graphql
+After:
+  - graphqlconfig
+---
+SilverStripe\GraphQL\Controller:
+  cors:
+    Enabled: true
+    Allow-Origin: '*'
+    Allow-Headers: 'Origin, Authorization, Content-Type, X-Auth-Token'
+    Allow-Methods:  'GET, POST, PATCH, PUT, DELETE, OPTIONS'
+    Max-Age: 86400
+  schema:
+    scaffolding_providers: [MyOrg\Model\CodeSample, MyOrg\Security\AppUser]
+    scaffolding:
+      types:
+        MyOrg\Security\AppUser:
+          fields: [ID, Name, FirstName, Surname, Email, Password]
+          operations:
+            create: true
+            read: true
+          nestedQueries:
+            Friends: true
+            CodeSamples: true
+            UsersVotes: true
+        MyOrg\Model\Vote:
+          fields: [ID, Title, Created, LastEdited, VoterID, CodeSampleID]
+          operations:
+            read: true
+            create: true
+        MyOrg\Model\Category:
+          fields: [ID, Name, BgColor]
+          operations: '*'
+        MyOrg\Model\CodeSample:
+          fields: [ID, Created, LastEdited, Title, CodeBody, Category, OwnerID]
+          operations: '*'
+          nestedQueries:
+            VotesOnCode:
+              paginate: false
+  # Enforce HTTP basic authentication for GraphQL requests
+  authenticators:
+    class: SilverStripe\GraphQL\Auth\BasicAuthAuthenticator
+    priority: 10
