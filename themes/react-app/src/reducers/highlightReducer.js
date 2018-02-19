@@ -1,6 +1,6 @@
 const defaultState = {
-  selected: 'tomorrow-night-eighties',
-  style: require('../../node_modules/react-syntax-highlighter/dist/styles/hljs/tomorrow-night-eighties').default,
+  selected: 'atelier-heath-light',
+  style: require('../../node_modules/react-syntax-highlighter/dist/styles/hljs/atelier-heath-light').default,
   showLineNumbers: false
 };
 export default (state = defaultState, action) => {

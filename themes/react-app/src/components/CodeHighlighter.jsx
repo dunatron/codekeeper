@@ -98,15 +98,7 @@ const availableStyles = [
   'zenburn'
 ];
 class CodeHighlighter extends React.Component {
-  constructor() {
-    super();
 
-    this.state = {
-      selected: 'tomorrow-night-eighties',
-      style: require('../../node_modules/react-syntax-highlighter/dist/styles/hljs/tomorrow-night-eighties').default,
-      showLineNumbers: false
-    }
-  }
   render() {
     const h1Style = {
       fontSize: 42,
@@ -116,11 +108,6 @@ class CodeHighlighter extends React.Component {
       fontSize: 24,
       color: 'aliceblue'
     };
-
-    console.group('State VS Props');
-    console.log(this.state);
-    console.log(this.props);
-    console.groupEnd();
 
     const {selectedStyle, style, showLineNumbers, classes} = this.props;
 
@@ -133,21 +120,7 @@ class CodeHighlighter extends React.Component {
           className={classes.textField}
           value={selectedStyle}
           onChange={(e) => this.props.dispatch(setStyle(e.target.value, require(`../../node_modules/react-syntax-highlighter/dist/styles/hljs/${e.target.value}`).default))}
-          // onChange={(e) => {
-          //   console.log(e)
-          //   //this.props.dispatch(setStyle(e.target.value, HighlightStyles.`${e.target.value}`))}
-          // }
-          // onChange={(e) => {
-          //   console.log('wtf');
-          //   console.log(e);
-          //  this.props.dispatch(setStyle(e.target.value, require(`../../node_modules/react-syntax-highlighter/dist/styles/hljs/${e.target.value}`)))
-          // }}
-          // // SelectProps={{
-          //   MenuProps: {
-          //     className: classes.menu,
-          //   },
-          // }}
-          helperText="Please select your currency"
+          helperText="select code highlight style"
           margin="normal"
         >
           {availableStyles.map(s => (
@@ -156,9 +129,6 @@ class CodeHighlighter extends React.Component {
             </MenuItem>
           ))}
         </TextField>
-
-
-
 
         <div style={{paddingTop: '10px', fontSize: 16, color: 'aliceblue'}}>
           <label htmlFor="showLineNumbers">Show Line Numbers:</label>
