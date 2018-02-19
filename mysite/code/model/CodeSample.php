@@ -1,6 +1,7 @@
 <?php
 namespace MyOrg\Model;
 
+use SilverStripe\ORM\Connect\MySQLSchemaManager;
 use GraphQL\Type\Definition\ResolveInfo;
 use MyOrg\Security\AppUser;
 use SilverStripe\GraphQL\Scaffolding\Interfaces\ScaffoldingProvider;
@@ -11,6 +12,17 @@ use SilverStripe\Security\Member;
 
 class CodeSample extends DataObject implements ScaffoldingProvider
 {
+    private static $create_table_options = [
+        MySQLSchemaManager::ID => 'ENGINE=MyISAM'
+    ];
+
+    private static $indexes = [
+        'SearchFields' => [
+            'type' => 'fulltext',
+            'columns' => ['Title'],
+        ]
+    ];
+
     private static $db = [
         'Title' => 'Varchar(255)',
         'CodeBody' => 'HTMLText',
@@ -77,9 +89,9 @@ class CodeSample extends DataObject implements ScaffoldingProvider
                 'filter' => 'String!',
             ])
             ->setResolver(function ($object, array $args, $context, ResolveInfo $info) {
-                $codeSamples = self::get()->filter([
+                $codeSamples = self::get()->filterAny([
                     'Title:PartialMatch' => $args['filter'],
-                    'CodeBody:PartialMatch' => $args['filter']
+                    'SearchFields:Fulltext' => $args['filter']
                 ]);
 
                 return $codeSamples;

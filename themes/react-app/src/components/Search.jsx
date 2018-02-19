@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { withApollo } from 'react-apollo'
+import React, {Component} from 'react'
+import {withApollo} from 'react-apollo'
 import gql from 'graphql-tag'
 import CodeSample from './CodeSample'
 import TextField from 'material-ui/TextField';
@@ -8,6 +8,8 @@ import {withStyles} from "material-ui/styles/index";
 import {compose, graphql} from "react-apollo/index";
 import IconButton from 'material-ui/IconButton';
 import SearchIcon from 'material-ui-icons/Search';
+import Chip from 'material-ui/Chip';
+import Avatar from 'material-ui/Avatar';
 
 const styles = theme => ({
   container: {
@@ -22,13 +24,22 @@ const styles = theme => ({
   menu: {
     width: 200,
   },
+  chipResults: {
+    display: 'flex',
+    overflowX: 'scroll',
+    margin: '15px'
+  },
+  chip: {
+    margin: theme.spacing.unit,
+  },
 });
 
 class Search extends Component {
 
   state = {
     codecs: [],
-    searchText: ''
+    searchText: '',
+    currentCode: null
   };
 
   render() {
@@ -45,20 +56,35 @@ class Search extends Component {
             label="Search field"
             type="search"
             className={classes.textField}
-            onChange={(e) => this.setState({ searchText: e.target.value })}
+            onChange={(e) => this.setState({searchText: e.target.value})}
             margin="normal"
           />
 
-          <IconButton color="primary" className={classes.button} aria-label="Add to shopping cart" onClick={() => this._executeSearch()}>
-            <SearchIcon />
+          <IconButton color="primary" className={classes.button} aria-label="Add to shopping cart"
+                      onClick={() => this._executeSearch()}>
+            <SearchIcon/>
           </IconButton>
 
 
         </div>
-        {this.state.codecs.map((code, index) => <CodeSample key={code.id} codeSample={code} index={index}/>)}
+        <div className={classes.chipResults}>
+          {this.state.codecs.map((code, index) => <Chip
+            avatar={<Avatar>CS</Avatar>}
+            label={code.Title}
+            onClick={() => this.handleChipClick(code)}
+            className={classes.chip}
+          />)}
+        </div>
+        {this.state.currentCode && <CodeSample codeSample={this.state.currentCode} />}
       </div>
     )
   }
+
+  handleChipClick = (code) => {
+    this.setState({
+      currentCode: code
+    })
+  };
 
   _executeSearch = async () => {
     console.log('well it has begunn.')
@@ -69,16 +95,8 @@ class Search extends Component {
       variables: {searchText}
     });
 
-    console.group('Search executes');
-    console.log(result);
-
-
     const codecs = result.data.searchAllCodeSamples;
     this.setState({codecs});
-
-    console.log(this.state.codecs);
-    console.log(codecs)
-
 
   }
 

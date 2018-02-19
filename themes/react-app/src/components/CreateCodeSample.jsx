@@ -95,7 +95,7 @@ class CreateCodeSample extends Component {
           margin="normal"
         />
 
-        <Button className={classes.button} raised color="primary" onClick={() => this._createLink()}>
+        <Button className={classes.button} raised color="primary" onClick={() => this._createCodeSample()}>
           Send
           <Icon className={classes.rightIcon}>send</Icon>
         </Button>
@@ -103,7 +103,7 @@ class CreateCodeSample extends Component {
     )
   }
 
-  _createLink = async () => {
+  _createCodeSample = async () => {
     const createdById = localStorage.getItem('GC_USER_ID');
 
     if (!createdById) {
