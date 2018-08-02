@@ -21,7 +21,8 @@ let GRAPHQL_ENDPOINT = SiteGraphqlConfig.getGraphqlEndPoint();
 const httpLink = new HttpLink({
   // uri: 'http://howtographql.d/graphql/',
   //uri: GRAPHQL_ENDPOINT,
-  uri: 'http://codekeeper.whatshapp.nz/graphql/',
+  // uri: 'http://codekeeper.whatshapp.nz/graphql/',
+  uri: 'http://code-keeper.d/graphql/',
 });
 
 
